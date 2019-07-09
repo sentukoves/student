@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Specification</title>
+    <td>
+        Для того, чтобы выполнить SELECT по БД <b>ВСЕХ</b> элементов необходимо ставить после адреса <b>/all</b>
+    </td>
+    <td><br>
+        Для того, чтобы выполнить поиск по табельному номеру, необходимоставить после адресса <b>/tabnum?tabnum=искомый номер</b>
+
+    </td>
+    <td><br>
+        Для того, чтобы выполнить UPDATE записи по табельному номеру, <b>/update?balance=количество&tabnum=табельный номер</b>
+    </td>
+</head>
+<body>
+
+</body>
+</htm
