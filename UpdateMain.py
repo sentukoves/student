@@ -1,4 +1,4 @@
-import sqlite3
+﻿import sqlite3
 import sys
 import os
 from flask import Flask, json, request, render_template
@@ -98,7 +98,7 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5070 , host='vmshqksipdev01')
+    app.run(debug=True,port=5070 , host='127.0.0.1')
 
 
 
