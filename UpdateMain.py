@@ -147,32 +147,36 @@ def fetch_history(serts = ''):
     WHERE skolko.FromTabnumPersons = kto.TabNum and  skolko.ToTabnumPersons =  komy.TabNum {}
         """.format(serts), flag=3)
     arra = {}
-    for row in resp:
-        print(row)
-        tem = {
-            'Family_from': row[0],
-            'Name_from': row[1],
-            'LastName_from': row[2],
-            'Balanc_from': row[3],
-            'Family_to': row[4],
-            'Name_to': row[5],
-            'LastName_to': row[6],
-            'Balanc_to': row[7],
-            'Summaru': row[8]
-        }
-        asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        id = ''
-        for i in range(10):
-            id += asrt[random.randint(1, len(asrt) - 1)]
-        arra[id] = tem
-    return {'response': arra}
+    try:
+        for row in resp:
+            print(row)
+            tem = {
+                'Family_from': row[0],
+                'Name_from': row[1],
+                'LastName_from': row[2],
+                'Balanc_from': row[3],
+                'Family_to': row[4],
+                'Name_to': row[5],
+                'LastName_to': row[6],
+                'Balanc_to': row[7],
+                'Summaru': row[8]
+            }
+            asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            id = ''
+            for i in range(10):
+                id += asrt[random.randint(1, len(asrt) - 1)]
+            arra[id] = tem
+    except TypeError:
+        return {"Tabnum": 'None'}
+    else:
+        return {'response': arra}
 
 
 @app.route('/history')
 def history():
     his = request.args.get('tabnum')
     if his:
-        return  json_response(fetch_history('where = kto.TabNum = {}'.format(his)))
+        return json_response(fetch_history(' and kto.TabNum = {}'.format(his)))
     return json_response(fetch_history(""))
 
 
