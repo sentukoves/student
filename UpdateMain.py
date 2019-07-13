@@ -127,7 +127,6 @@ def auth():
         return json_response({'Status': {'Category': '{}'.format(out_response), 'Boolean': "False"}}),
     return json_response({'Не все атрибуты заполнены'})
 
-
 def fetch_history(serts = ''):
     resp = response_all_persons("""
         SELECT 
@@ -170,20 +169,14 @@ def fetch_history(serts = ''):
         return json_response({"Tabnum": 'None'})
     else:
         return json_response({'response': arra})
-
-
 @app.route('/history')
 def history():
     his = request.args.get('tabnum')
     if his:
         return json_response(fetch_history(' and kto.TabNum = {}'.format(his)))
     return json_response(fetch_history())
-
-
 @app.route("/")
 def index():
     return render_template('index.html')
-
-
 if __name__ == '__main__':
     app.run(debug=True, port=5070, host='127.0.0.1')
