@@ -167,9 +167,9 @@ def fetch_history(serts = ''):
                 id += asrt[random.randint(1, len(asrt) - 1)]
             arra[id] = tem
     except TypeError:
-        return {"Tabnum": 'None'}
+        return json_response({"Tabnum": 'None'})
     else:
-        return {'response': arra}
+        return json_response({'response': arra})
 
 
 @app.route('/history')
@@ -177,7 +177,7 @@ def history():
     his = request.args.get('tabnum')
     if his:
         return json_response(fetch_history(' and kto.TabNum = {}'.format(his)))
-    return json_response(fetch_history(""))
+    return json_response(fetch_history())
 
 
 @app.route("/")
