@@ -64,7 +64,16 @@ def update_json():
     tabnum = request.args.get('tabnum')
     fromtabnum = request.args.get('fromtabnum')
     balance = request.args.get('balance')
-    print(tabnum, fromtabnum, balance)
+    admins = request.args.get("admins")
+
+
+    if admins == 'True' and balance and tabnum:
+        response_all_persons('UPDATE Persons '
+                             'Set balance = balance + {} '
+                             'where TabNum = {}'.format(balance, fromtabnum),
+                             flag=1)
+        return json_response({{'Update': 'True'}})
+
 
     if tabnum and balance and fromtabnum:
         response_all_persons('UPDATE Persons '
@@ -82,7 +91,7 @@ def update_json():
             "({} , {} , {})".format(
                 int(tabnum), int(fromtabnum), int(balance)), flag=1)
 
-        return json_response({'Insert': 'True'})
+        return json_response({'Update': 'True'})
     else:
         art = {}
         if not tabnum and not balance:
