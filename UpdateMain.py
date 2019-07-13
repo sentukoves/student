@@ -70,7 +70,7 @@ def update_json():
     if admins == 'True' and balance and tabnum:
         response_all_persons('UPDATE Persons '
                              'Set balance = balance + {} '
-                             'where TabNum = {}'.format(balance, fromtabnum),
+                             'where TabNum = {}'.format(balance, tabnum),
                              flag=1)
         return json_response({{'Update': 'True'}})
 
