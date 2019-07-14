@@ -7,7 +7,7 @@ import random
 
 def json_response(string):
     return app.response_class(
-        response=json.dumps('{}'.format(string)),
+        response="{}".format(str(string).replace("'", '"')),
         mimetype='application/json'
     )
 
@@ -182,10 +182,10 @@ def fetch_history(serts = ''):
 def history():
     his = request.args.get('tabnum')
     if his:
-        return json_response(fetch_history(' and kto.TabNum = {}'.format(his)))
-    return json_response(fetch_history())
+        return fetch_history(' and kto.TabNum = {}'.format(his))
+    return fetch_history()
 @app.route("/")
 def index():
     return render_template('index.html')
 if __name__ == '__main__':
-    app.run(debug=True, port=5070, host='127.0.0.1')
+    app.run(debug=True, port=5070, host='192.168.1.64')
