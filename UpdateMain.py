@@ -147,7 +147,9 @@ def fetch_history(serts = ''):
     komy."Last Name", 
     komy.Family, 
     komy.Balance,
-    skolko.BalanceTranc as Отправил 
+    skolko.BalanceTranc, 
+    kto.TabNum, 
+    komy.TabNum
     FROM  
     history as  skolko ,
     persons as kto ,
@@ -167,7 +169,9 @@ def fetch_history(serts = ''):
                 'Name_to': row[5],
                 'LastName_to': row[6],
                 'Balanc_to': row[7],
-                'Summaru': row[8]
+                'Summaru': row[8],
+                'FromTabNum': row[9],
+                'ToTabNum': row[10]
             }
             asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
             id = ''
