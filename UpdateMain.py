@@ -220,7 +220,7 @@ def priz():
             "SELECT ncount , NBalance from priz where id = '{}'".format(id) , flag=3)
         print(count_check)
         if len(count_check) >= 0:
-            if count_check[0][0] > count:
+            if count_check[0][0] >= count:
                 price = count_check[0][1]
                 response_all_persons('UPDATE Persons '
                                      'Set balance = balance - {} '
