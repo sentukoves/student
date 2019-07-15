@@ -16,17 +16,19 @@
     <td> для админской учетки /update?balance=10&tabnum=5435345&admins=True</td>
 <td>
         <br>
-       Получить json авторизации /auth?login=ADMIN&password=ADMIN  примерный JSON ответа {"Status": {"Boolean": "True", "Category": "admin"}}   True означет доступ разрешен </b>
+       Получить json авторизации /auth?login=ADMIN&password=ADMIN  Примерный JSON ответа {"Status": {"Boolean": "True", "Category": "admin"}} ,  True означает доступ разрешен. </b>
     </td>
 
-    <td>
-        /history?tabnum=5435345 вывеси по табельному номеру /history вывести всеы
+    <td><br>
+        Вывести историю по табельному номер: /history?tabnum=5435345
+        <br> Вывести всю историю: /history
     </td>
 
 
-    <td>
-        /priz?all=True все призы 
-        /priz?tabnum=Табельный номер кто покупает&id=Номер в базе данных продукта (приходит в json)&count=Количество сколько человек хочет купить
+    <td><br>
+        Вывести все призы: /priz?all=True
+        <br>
+        Купить товар: /priz?tabnum=Табельный номер кто покупает&id=Номер в базе данных продукта (приходит в json)&count=Количество сколько человек хочет купить
 
     </td>
 </head>
