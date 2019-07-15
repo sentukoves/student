@@ -66,14 +66,12 @@ def update_json():
     balance = request.args.get('balance')
     admins = request.args.get("admins")
 
-
     if admins == 'True' and balance and tabnum:
         response_all_persons('UPDATE Persons '
                              'Set balance = balance + {} '
                              'where TabNum = {}'.format(balance, tabnum),
                              flag=1)
         return json_response({{'Update': 'True'}})
-
 
     if tabnum and balance and fromtabnum:
         response_all_persons('UPDATE Persons '
@@ -136,7 +134,8 @@ def auth():
         return json_response({'Status': {'Category': '{}'.format(out_response), 'Boolean': "False"}}),
     return json_response({'Не все атрибуты заполнены'})
 
-def fetch_history(serts = ''):
+
+def fetch_history(serts=''):
     resp = response_all_persons("""
         SELECT 
     kto."First Name"   AS Фамилия,
@@ -182,14 +181,64 @@ def fetch_history(serts = ''):
         return json_response({"Tabnum": 'None'})
     else:
         return json_response({'response': arra})
+
+
 @app.route('/history')
 def history():
     his = request.args.get('tabnum')
     if his:
         return fetch_history(' and kto.TabNum = {}'.format(his))
     return fetch_history()
+
+
+@app.route('/priz')
+def priz():
+    list_point = request.args.get('all')
+    tabnum = request.args.get('tabnum')
+    count = request.args.get('count')
+    id = request.args.get('id')
+
+    if list_point == 'True':
+        All_priz = response_all_persons("SELECT *  FROm priz", flag=3)
+        out_array_priz = {}
+        for elements in All_priz:
+            asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            id = ''
+            for i in range(10):
+                id += asrt[random.randint(1, len(asrt) - 1)]
+            temp = {
+                "id":elements[0],
+                'Name': elements[1],
+                'Price': elements[2],
+                'Count': elements[3],
+            }
+            out_array_priz[id] = temp
+        return json_response({'ALL':out_array_priz})
+
+    if tabnum and count and id:
+        count_check = response_all_persons(
+            "SELECT ncount , NBalance from priz where id = '{}'".format(id) , flag=3)
+        print(count_check)
+        if len(count_check) >= 0:
+            if count_check[0][0] > count:
+                price = count_check[0][1]
+                response_all_persons('UPDATE Persons '
+                                     'Set balance = balance - {} '
+                                     'where TabNum = {}'.format(price, tabnum),
+                                     flag=1)
+                response_all_persons(
+                    "UPDATE Priz SET ncount = ncount - {} "
+                    "where id = {}".format(count,id) , flag=1)
+                return json_response({'STATUS': 'Успешно'})
+            return json_response({'STATUS': 'Недостаточное количество'})
+        return json_response({"STATUS": 'Ненайден товар'})
+    return json_response({"STATUS:'Параметры не отпределены"})
+
+
 @app.route("/")
 def index():
     return render_template('index.html')
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5070, host='192.168.1.64')
+    app.run(debug=True, port=5070, host='VMSHQKSIPDEV01')
