@@ -71,7 +71,7 @@ def update_json():
                              'Set balance = balance + {} '
                              'where TabNum = {}'.format(balance, tabnum),
                              flag=1)
-        return {"Update": "True"}
+        return json_response({'Update': 'True'})
 
     if tabnum and balance and fromtabnum:
         response_all_persons('UPDATE Persons '
@@ -89,16 +89,16 @@ def update_json():
             "({} , {} , {})".format(
                 int(tabnum), int(fromtabnum), int(balance)), flag=1)
 
-        return {"Update": "True"}
+        return json_response({'Update': 'True'})
     else:
         art = {}
         if not tabnum and not balance:
-            art = {"lost atributte": "ALL"}
+            art = {'lost atributte': 'ALL'}
         elif not balance:
-            art = {"lost atributte": "balance"}
+            art = {'lost atributte': 'balance'}
         elif not tabnum:
-            art = {"lost atributte": "tabnum"}
-        return art
+            art = {'lost atributte': 'tabnum'}
+        return json_response(art)
 
 
 @app.route('/tabnum', methods=['GET'])
@@ -108,7 +108,7 @@ def tabnum_json():
         resp = (response_all_persons('SELECT * FROM persons where tabnum = {}'.format(tabnum)))
         return json_response(resp)
     else:
-        return {"Табельный номер не найден"}
+        return json_response({'Табельный номер не найден'})
 
 
 @app.route('/auth')
@@ -131,8 +131,8 @@ def auth():
                 response=json.dumps(resp),
                 mimetype='application/json')
 
-        return {"Status": {"Category": '{}'.format(out_response), "Boolean": "False"}},
-    return {"Не все атрибуты заполнены"}
+            return {"Status": {"Category": '{}'.format(out_response), "Boolean": "False"}},
+        return {"Не все атрибуты заполнены"}
 
 
 def fetch_history(serts=''):
@@ -178,7 +178,7 @@ def fetch_history(serts=''):
                 id += asrt[random.randint(1, len(asrt) - 1)]
             arra[id] = tem
     except TypeError:
-        return {"Tabnum": "None"}
+        return json_response({"Tabnum": 'None'})
     else:
         return json_response({"response": arra})
 
