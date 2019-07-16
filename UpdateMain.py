@@ -224,7 +224,7 @@ def priz():
         count_ed = count_check[0][0]
 
         if len(count_check) >= 0:
-            if count_ed > count and person_balance > price :
+            if count_ed >= count and person_balance >= price * count:
                 response_all_persons('UPDATE Persons '
                                      'Set balance = balance - {} '
                                      'where TabNum = {}'.format(price, tabnum),
