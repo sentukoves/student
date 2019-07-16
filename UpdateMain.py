@@ -71,7 +71,7 @@ def update_json():
                              'Set balance = balance + {} '
                              'where TabNum = {}'.format(balance, tabnum),
                              flag=1)
-        return json_response({'Update': 'True'})
+        return json_response({{'Update': 'True'}})
 
     if tabnum and balance and fromtabnum:
         response_all_persons('UPDATE Persons '
@@ -131,8 +131,8 @@ def auth():
                 response=json.dumps(resp),
                 mimetype='application/json')
 
-            return {"Status": {"Category": '{}'.format(out_response), "Boolean": "False"}},
-        return {"Не все атрибуты заполнены"}
+        return json_response({'Status': {'Category': '{}'.format(out_response), 'Boolean': "False"}}),
+    return json_response({'Не все атрибуты заполнены'})
 
 
 def fetch_history(serts=''):
@@ -180,7 +180,7 @@ def fetch_history(serts=''):
     except TypeError:
         return json_response({"Tabnum": 'None'})
     else:
-        return json_response({"response": arra})
+        return json_response({'response': arra})
 
 
 @app.route('/history')
@@ -224,12 +224,7 @@ def priz():
         count_ed = count_check[0][0]
 
         if len(count_check) >= 0:
-<<<<<<< HEAD
             if count_ed > count and person_balance > price :
-=======
-            if count_check[0][0] >= count:
-                price = count_check[0][1]
->>>>>>> 5c0db329def148a79befc8024612054fa9013a01
                 response_all_persons('UPDATE Persons '
                                      'Set balance = balance - {} '
                                      'where TabNum = {}'.format(price, tabnum),
@@ -249,4 +244,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5070, host='192.168.1.64')
+    app.run(debug=True, port=5070, host='VMSHQKSIPDEV01')
