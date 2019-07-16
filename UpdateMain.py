@@ -67,11 +67,11 @@ def update_json():
     admins = request.args.get("admins")
 
     if admins == 'True' and balance and tabnum:
-        response_all_persons('UPDATE Persons '
-                             'Set balance = balance + {} '
-                             'where TabNum = {}'.format(balance, tabnum),
-                             flag=1)
-        return json_response({{'Update': 'True'}})
+            response_all_persons('UPDATE Persons '
+                                 'Set balance = balance + {} '
+                                 'where TabNum = {}'.format(balance, tabnum),
+                                  flag=1)
+            return json_response({'Status': 'True'})
 
     if tabnum and balance and fromtabnum:
         resp = (response_all_persons("SELECT * FROM persons where TabNum = {}"
@@ -81,30 +81,30 @@ def update_json():
         oldbalance = int(resp2[:-3])
         if oldbalance >= int(balance):
             response_all_persons('UPDATE Persons '
-                                 'Set balance = balance - {} '
-                                 'where TabNum = {}'.format(balance, fromtabnum),
-                                 flag=1)
+                                     'Set balance = balance - {} '
+                                     'where TabNum = {}'.format(balance, fromtabnum),
+                                     flag=1)
             response_all_persons("UPDATE Persons "
-                                 "SET Balance= Balance + {} "
-                                 "where TabNum = {} ".format(balance, tabnum),
-                                 flag=1)
+                                     "SET Balance= Balance + {} "
+                                     "where TabNum = {} ".format(balance, tabnum),
+                                     flag=1)
             response_all_persons(
-                "INSERT INTO history "
-                "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
-                " VALUES "
-                "({} , {} , {})".format(
-                    int(tabnum), int(fromtabnum), int(balance)), flag=1)
+                    "INSERT INTO history "
+                    "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
+                    " VALUES "
+                    "({} , {} , {})".format(
+                        int(tabnum), int(fromtabnum), int(balance)), flag=1)
 
-            return json_response({'Update': 'True'})
-        return json_response({'Недостаточное количество WorkCoin'})
+            return json_response({'Status': 'True'})
+        return json_response({'Status': 'Недостаточное количество WorkCoin'})
     else:
         art = {}
         if not tabnum and not balance:
-            art = {'lost atributte': 'ALL'}
+            art = {'Status': 'Отсутствуют табельный номер и сумма'}
         elif not balance:
-            art = {'lost atributte': 'balance'}
+            art = {'Status': 'Отсутствует сумма'}
         elif not tabnum:
-            art = {'lost atributte': 'tabnum'}
+            art = {'Status': 'Отсутствует табельный номер'}
         return json_response(art)
 
 
@@ -132,7 +132,14 @@ def auth():
                 "select status from auth where login = '{}' and password = '{}'"
                 " ".format(login, password), flag=3)
             if out_response1.__len__() > 0:
-                resp = {'Status': {'Category': '{}'.format(out_response1[0][0]), 'Boolean': "True"}}
+                if (login == 'admin'):
+                    resp = {'Status': {'Category': '{}'.format(out_response1[0][0]), 'Boolean': "True"}}
+                else:
+                    out_response2 = response_all_persons(
+                        "select user.TabNum FROM auth as logins, persons as user WHERE logins.id = user.id and logins.login = '{}'"
+                        " ".format(login), flag=3)
+                    resp = {'Status': {'Category': '{}'.format(out_response1[0][0]), 'Boolean': "True", 'TabNum': '{}'.format(out_response2[0][0])}}
+
                 return app.response_class(
                     response=json.dumps(resp),
                     mimetype='application/json')
