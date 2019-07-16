@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UpdateMain.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="234" column="75" selection-start-line="234" selection-start-column="75" selection-end-line="234" selection-end-column="75" />
+            <state relative-caret-position="1513">
+              <caret line="149" column="79" lean-forward="true" selection-start-line="149" selection-start-column="79" selection-end-line="149" selection-end-column="79" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -261,7 +261,7 @@
       <window_info id="Job Explorer" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7195416" visible="true" weight="0.49832028" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7195416" weight="0.49832028" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49841937" weight="0.39846742" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -344,8 +344,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/UpdateMain.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="234" column="75" selection-start-line="234" selection-start-column="75" selection-end-line="234" selection-end-column="75" />
+        <state relative-caret-position="1513">
+          <caret line="149" column="79" lean-forward="true" selection-start-line="149" selection-start-column="79" selection-end-line="149" selection-end-column="79" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

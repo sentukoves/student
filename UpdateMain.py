@@ -146,8 +146,8 @@ def auth():
                     mimetype='application/json')
 
             return json_response({'Status': {'Category': '{}'.format(out_response[0][0]), 'Boolean': "False"}})
-        return json_response({'Неверный логин'})
-    return json_response({'Не все атрибуты заполнены'})
+        return json_response({'Status' : {'Category':"Неверный логин"}})
+    return json_response({'Status':{'Category' : "Не все атрибуты заполнены"}})
 
 
 def fetch_history(serts=''):
