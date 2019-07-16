@@ -118,20 +118,20 @@ def auth():
 
     if login and password:
         out_response = response_all_persons(
-            "select status from auth where login ="
-            " '{}' and password = '{}'"
-            " ".format(login, password), flag=3)[0][0]
+            "select status from auth where login = '{}'"
+            " ".format(login), flag=3)
+        if out_response.__len__() > 0:
+            out_response1 = response_all_persons(
+                "select status from auth where login = '{}' and password = '{}'"
+                " ".format(login, password), flag=3)
+            if out_response1.__len__() > 0:
+                resp = {'Status': {'Category': '{}'.format(out_response1[0][0]), 'Boolean': "True"}}
+                return app.response_class(
+                    response=json.dumps(resp),
+                    mimetype='application/json')
 
-        if out_response.__len__() >= 0:
-            resp = {'Status': {'Category':
-                                   '{}'.format(out_response),
-                               'Boolean': "True"}}
-
-            return app.response_class(
-                response=json.dumps(resp),
-                mimetype='application/json')
-
-        return json_response({'Status': {'Category': '{}'.format(out_response), 'Boolean': "False"}}),
+            return json_response({'Status': {'Category': '{}'.format(out_response[0][0]), 'Boolean': "False"}})
+        return json_response({'Неверный логин'})
     return json_response({'Не все атрибуты заполнены'})
 
 
@@ -244,4 +244,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5070, host='VMSHQKSIPDEV01')
+    app.run(debug=True, port=5070, host='192.168.1.64')
