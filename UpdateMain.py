@@ -74,22 +74,29 @@ def update_json():
         return json_response({{'Update': 'True'}})
 
     if tabnum and balance and fromtabnum:
-        response_all_persons('UPDATE Persons '
-                             'Set balance = balance - {} '
-                             'where TabNum = {}'.format(balance, fromtabnum),
-                             flag=1)
-        response_all_persons("UPDATE Persons "
-                             "SET Balance= Balance + {} "
-                             "where TabNum = {} ".format(balance, tabnum),
-                             flag=1)
-        response_all_persons(
-            "INSERT INTO history "
-            "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
-            " VALUES "
-            "({} , {} , {})".format(
-                int(tabnum), int(fromtabnum), int(balance)), flag=1)
+        resp = (response_all_persons("SELECT * FROM persons where TabNum = {}"
+                                     .format(fromtabnum)))
+        resp1 = (str(resp)).split()
+        resp2 = resp1[len(resp1) - 1]
+        oldbalance = int(resp2[:-3])
+        if oldbalance >= int(balance):
+            response_all_persons('UPDATE Persons '
+                                 'Set balance = balance - {} '
+                                 'where TabNum = {}'.format(balance, fromtabnum),
+                                 flag=1)
+            response_all_persons("UPDATE Persons "
+                                 "SET Balance= Balance + {} "
+                                 "where TabNum = {} ".format(balance, tabnum),
+                                 flag=1)
+            response_all_persons(
+                "INSERT INTO history "
+                "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
+                " VALUES "
+                "({} , {} , {})".format(
+                    int(tabnum), int(fromtabnum), int(balance)), flag=1)
 
-        return json_response({'Update': 'True'})
+            return json_response({'Update': 'True'})
+        return json_response({'Недостаточное количество WorkCoin'})
     else:
         art = {}
         if not tabnum and not balance:
@@ -224,16 +231,18 @@ def priz():
         count_ed = count_check[0][0]
 
         if len(count_check) >= 0:
-            if count_ed >= count and person_balance >= price * count:
-                response_all_persons('UPDATE Persons '
-                                     'Set balance = balance - {} '
-                                     'where TabNum = {}'.format(price, tabnum),
-                                     flag=1)
-                response_all_persons(
-                    "UPDATE Priz SET ncount = ncount - {} "
-                    "where id = {}".format(count,id) , flag=1)
-                return json_response({'STATUS': 'Успешно'})
-            return json_response({'STATUS': 'Недостаточное количество воркоинов'})
+            if count_ed >= count:
+                if person_balance >= price * count:
+                   response_all_persons('UPDATE Persons '
+                                        'Set balance = balance - {} '
+                                        'where TabNum = {}'.format(price, tabnum),
+                                        flag=1)
+                   response_all_persons(
+                       "UPDATE Priz SET ncount = ncount - {} "
+                       "where id = {}".format(count,id) , flag=1)
+                   return json_response({'STATUS': 'Успешно'})
+                return json_response({'STATUS': 'Недостаточное количество WorkCoin'})
+            return json_response({'STATUS': 'Недостаточное количество товаров'})
         return json_response({"STATUS": 'Ненайден товар'})
     return json_response({"STATUS:'Параметры не отпределены"})
 
