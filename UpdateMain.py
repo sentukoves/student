@@ -67,6 +67,7 @@ def update_json():
     admins = request.args.get("admins")
 
     if admins == 'True' and balance and tabnum:
+
             response_all_persons('UPDATE Persons '
                                  'Set balance = balance + {} '
                                  'where TabNum = {}'.format(balance, tabnum),
@@ -231,15 +232,17 @@ def priz():
 
     if tabnum and count and id:
         count_check = response_all_persons(
-            "SELECT ncount , NBalance from priz where id = '{}'".format(id) , flag=3)
+            "SELECT ncount , NBalance from priz where id = '{}'".format(id), flag=3)
         count_balance =  response_all_persons('SELECT balance FROM Persons where tabnum = {}'.format(tabnum) , flag=3 )
         person_balance = count_balance[0][0]
         price = count_check[0][1]
         count_ed = count_check[0][0]
 
-        if len(count_check) >= 0:
+        if len(count_check) > 0:
             if count_ed >= count:
-                if person_balance >= price * count:
+                print(price)
+                print(count)
+                if int(person_balance) >= (int(price) * int(count)):
                    response_all_persons('UPDATE Persons '
                                         'Set balance = balance - {} '
                                         'where TabNum = {}'.format(price, tabnum),
@@ -247,11 +250,11 @@ def priz():
                    response_all_persons(
                        "UPDATE Priz SET ncount = ncount - {} "
                        "where id = {}".format(count,id) , flag=1)
-                   return json_response({'STATUS': 'Успешно'})
+                   return json_response({'STATUS': 'True'})
                 return json_response({'STATUS': 'Недостаточное количество WorkCoin'})
             return json_response({'STATUS': 'Недостаточное количество товаров'})
-        return json_response({"STATUS": 'Ненайден товар'})
-    return json_response({"STATUS:'Параметры не отпределены"})
+        return json_response({"STATUS": 'Не найден товар'})
+    return json_response({"STATUS":"Параметры не отпределены"})
 
 
 @app.route("/")
