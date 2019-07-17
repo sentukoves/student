@@ -96,14 +96,14 @@ def update_json():
                                      "SET Balance= Balance + {} "
                                      "where TabNum = {} ".format(balance, tabnum),
                                      flag=1)
-            dt = strftime("%d.%m.%Y %H:%M:%S", gmtime())
-            print(dt)
+            dt = strftime("%d.%m.%Y %H:%M:%S", gmtime()) # текущее время в нужном формате
+
             response_all_persons(
                     "INSERT INTO history "
-                    "(ToTabnumPersons , FromTabnumPersons , BalanceTranc, TransactDate)"
+                    "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
                     " VALUES "
                     "({} , {} , {}, {})".format(
-                        int(tabnum), int(fromtabnum), int(balance), dt), flag=1)
+                        int(tabnum), int(fromtabnum), int(balance)), flag=1)  #вставить время  сюда как четвертый аргумент TransactDate
 
             return json_response({'Status': 'True'})
         return json_response({'Status': 'Недостаточное количество WorkCoin'})
@@ -208,7 +208,6 @@ def fetch_history(serts=''):
         return json_response({"Tabnum": 'None'})
     else:
         return json_response({'response': arra})
-
 
 @app.route('/history')
 def history():
