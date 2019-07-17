@@ -173,7 +173,8 @@ def fetch_history(serts=''):
     skolko.BalanceTranc, 
     kto.TabNum, 
     komy.TabNum,
-    skolko.TransactDate
+    skolko.TransactDate,
+    skolko.id
     FROM  
     history as  skolko ,
     persons as kto ,
@@ -185,18 +186,19 @@ def fetch_history(serts=''):
         for row in resp:
             print(row)
             tem = {
-                'Family_from': row[0],
-                'Name_from': row[1],
-                'LastName_from': row[2],
+                'Name_from': row[0],
+                'LastName_from': row[1],
+                'Family_from': row[2],
                 'Balanc_from': row[3],
-                'Family_to': row[4],
-                'Name_to': row[5],
-                'LastName_to': row[6],
+                'Name_to': row[4],
+                'LastName_to': row[5],
+                'Family_to': row[6],
                 'Balanc_to': row[7],
                 'Summaru': row[8],
                 'FromTabNum': row[9],
                 'ToTabNum': row[10],
-                'TransactDate': row[11]
+                'TransactDate': row[11],
+                'ID': row[12]
 
             }
             asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
