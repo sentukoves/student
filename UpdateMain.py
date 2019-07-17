@@ -2,6 +2,7 @@ import sqlite3
 import sys
 import os
 from flask import Flask, json, request, render_template
+from time import gmtime, strftime
 import random
 
 
@@ -72,6 +73,12 @@ def update_json():
                                  'Set balance = balance + {} '
                                  'where TabNum = {}'.format(balance, tabnum),
                                   flag=1)
+            response_all_persons(
+                "INSERT INTO history "
+                "(ToTabnumPersons , FromTabnumPersons , BalanceTranc, TransactDate)"
+                " VALUES "
+                "({} , {} , {}, {})".format(int(tabnum), 0, int(balance), strftime("%d.%m.%Y %H:%M:%S", gmtime())),
+                                            flag=1)
             return json_response({'Status': 'True'})
 
     if tabnum and balance and fromtabnum:
@@ -89,12 +96,14 @@ def update_json():
                                      "SET Balance= Balance + {} "
                                      "where TabNum = {} ".format(balance, tabnum),
                                      flag=1)
+            dt = strftime("%d.%m.%Y %H:%M:%S", gmtime())
+            print(dt)
             response_all_persons(
                     "INSERT INTO history "
-                    "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
+                    "(ToTabnumPersons , FromTabnumPersons , BalanceTranc, TransactDate)"
                     " VALUES "
-                    "({} , {} , {})".format(
-                        int(tabnum), int(fromtabnum), int(balance)), flag=1)
+                    "({} , {} , {}, {})".format(
+                        int(tabnum), int(fromtabnum), int(balance), dt), flag=1)
 
             return json_response({'Status': 'True'})
         return json_response({'Status': 'Недостаточное количество WorkCoin'})
@@ -163,7 +172,8 @@ def fetch_history(serts=''):
     komy.Balance,
     skolko.BalanceTranc, 
     kto.TabNum, 
-    komy.TabNum
+    komy.TabNum,
+    skolko.TransactDate
     FROM  
     history as  skolko ,
     persons as kto ,
@@ -185,7 +195,9 @@ def fetch_history(serts=''):
                 'Balanc_to': row[7],
                 'Summaru': row[8],
                 'FromTabNum': row[9],
-                'ToTabNum': row[10]
+                'ToTabNum': row[10],
+                'TransactDate': row[11]
+
             }
             asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
             id = ''
