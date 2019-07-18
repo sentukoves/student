@@ -269,7 +269,7 @@ def fetch_buys(serts=''):
         return json_response({'response': arra})
 
 @app.route('/buyhistory')
-def history():
+def buyhistory():
     his = request.args.get('tabnum')
     if his:
         return fetch_buys(' and kto.TabNum = {}'.format(his))
