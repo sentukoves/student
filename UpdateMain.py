@@ -237,7 +237,8 @@ def fetch_buys(serts=''):
     kto.TabNum,
     skolko.BuyDate,
     prize.id,
-    kto.FIO
+    kto.FIO,
+    skolko.id
     FROM  
     buy_history as  skolko ,
     persons as kto ,
@@ -257,7 +258,8 @@ def fetch_buys(serts=''):
                 'TabNum': row[5],
                 'Datetime': row[6],
                 'BuyId': row[7],
-                'FIO': row[8]
+                'FIO': row[8],
+                'ID': row[9]
             }
             asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
             id = ''
