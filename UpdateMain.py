@@ -176,7 +176,9 @@ def fetch_history(serts=''):
     kto.TabNum, 
     komy.TabNum,
     skolko.TransactDate,
-    skolko.id
+    skolko.id,
+    kto.FIO,
+    komy.FIO
     FROM  
     history as  skolko ,
     persons as kto ,
@@ -200,7 +202,9 @@ def fetch_history(serts=''):
                 'FromTabNum': row[9],
                 'ToTabNum': row[10],
                 'TransactDate': row[11],
-                'ID': row[12]
+                'ID': row[12],
+                'FromFIO': row[13],
+                'ToFIO': row[14]
 
             }
             asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
