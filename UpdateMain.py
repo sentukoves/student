@@ -31,8 +31,8 @@ def response_all_persons(sql, flag=0):
                         "Last Name": "",
                         "Family": "",
                         "TabNum": "",
-                        "Balance": "",
-                        "FIO": ""}
+                        "FIO": "",
+                        "Balance": ""}
                 id = ""
                 for i in range(10):
                     id += asrt[random.randint(1, len(asrt) - 1)]
