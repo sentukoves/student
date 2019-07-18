@@ -75,11 +75,12 @@ def update_json():
                                  'Set balance = balance + {} '
                                  'where TabNum = {}'.format(balance, tabnum),
                                   flag=1)
+            dt = strftime("%d.%m.%Y %H:%M:%S", gmtime()) # текущее время в нужном формате
             response_all_persons(
                 "INSERT INTO history "
-                "(ToTabnumPersons , FromTabnumPersons , BalanceTranc, TransactDate)"
+                "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"#вставить время  сюда как четвертый аргумент TransactDate
                 " VALUES "
-                "({} , {} , {}, {})".format(int(tabnum), 0, int(balance), strftime("%d.%m.%Y %H:%M:%S", gmtime())),
+                "({} , {} , {})".format(int(tabnum), 0, int(balance)),
                                             flag=1)
             return json_response({'Status': 'True'})
 
@@ -104,7 +105,7 @@ def update_json():
                     "INSERT INTO history "
                     "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
                     " VALUES "
-                    "({} , {} , {}, {})".format(
+                    "({} , {} , {})".format(
                         int(tabnum), int(fromtabnum), int(balance)), flag=1)  #вставить время  сюда как четвертый аргумент TransactDate
 
             return json_response({'Status': 'True'})
@@ -224,6 +225,56 @@ def history():
         return fetch_history(' and kto.TabNum = {}'.format(his))
     return fetch_history()
 
+def fetch_buys(serts=''):
+    resp = response_all_persons("""
+        SELECT 
+    kto."First Name"   AS Фамилия,
+    kto."Last Name"  as Имя,
+    kto.Family  as отчество,
+    skolko.Summary, 
+    skolko.Count, 
+    kto.TabNum,
+    skolko.BuyDate,
+    prize.id,
+    kto.FIO
+    FROM  
+    buy_history as  skolko ,
+    persons as kto ,
+   Priz as  prize
+    WHERE skolko.FromTabnumPersons = kto.TabNum and  skolko.PrizeID =  prize.id {}
+        """.format(serts), flag=3)
+    arra = {}
+    try:
+        for row in resp:
+            print(row)
+            tem = {
+                'Name_to': row[0],
+                'LastName_to': row[1],
+                'Family_to': row[2],
+                'Summary': row[3],
+                'Count': row[4],
+                'TabNum': row[5],
+                'Datetime': row[6],
+                'BuyId': row[7],
+                'FIO': row[8]
+            }
+            asrt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            id = ''
+            for i in range(10):
+                id += asrt[random.randint(1, len(asrt) - 1)]
+            arra[id] = tem
+    except TypeError:
+        return json_response({"Tabnum": 'None'})
+    else:
+        return json_response({'response': arra})
+
+@app.route('/buyhistory')
+def history():
+    his = request.args.get('tabnum')
+    if his:
+        return fetch_buys(' and kto.TabNum = {}'.format(his))
+    return fetch_buys()
+
 
 @app.route('/priz')
 def priz():
@@ -259,9 +310,8 @@ def priz():
 
         if len(count_check) > 0:
             if count_ed >= count:
-                print(price)
-                print(count)
-                if int(person_balance) >= (int(price) * int(count)):
+                summary = int(price) * int(count)
+                if int(person_balance) >= summary:
                    response_all_persons('UPDATE Persons '
                                         'Set balance = balance - {} '
                                         'where TabNum = {}'.format(price, tabnum),
@@ -269,6 +319,14 @@ def priz():
                    response_all_persons(
                        "UPDATE Priz SET ncount = ncount - {} "
                        "where id = {}".format(count,id) , flag=1)
+                   dt = strftime("%d.%m.%Y %H:%M:%S", gmtime()) # текущее время в нужном формате
+                   response_all_persons(
+                    "INSERT INTO history "
+                    "(PrizeId , FromTabnumPersons , Count, Summary)"
+                    " VALUES "
+                    "({} , {} , {}, {})".format(
+                        int(id), int(tabnum), int(count), int(summary)), flag=1)  #вставить время сюда как пятый аргумент BuyDate
+
                    return json_response({'STATUS': 'True'})
                 return json_response({'STATUS': 'Недостаточное количество WorkCoin'})
             return json_response({'STATUS': 'Недостаточное количество товаров'})
@@ -282,4 +340,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5070, host='192.168.1.64')
+    app.run(debug=True, port=5070, host='127.0.0.1')
