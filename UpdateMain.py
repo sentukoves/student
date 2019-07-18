@@ -321,7 +321,7 @@ def priz():
                        "where id = {}".format(count,id) , flag=1)
                    dt = strftime("%d.%m.%Y %H:%M:%S", gmtime()) # текущее время в нужном формате
                    response_all_persons(
-                    "INSERT INTO history "
+                    "INSERT INTO buy_history "
                     "(PrizeId , FromTabnumPersons , Count, Summary)"
                     " VALUES "
                     "({} , {} , {}, {})".format(
