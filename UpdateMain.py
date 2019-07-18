@@ -99,14 +99,15 @@ def update_json():
                                      "SET Balance= Balance + {} "
                                      "where TabNum = {} ".format(balance, tabnum),
                                      flag=1)
-            dt = strftime("%d.%m.%Y %H:%M:%S", gmtime()) # текущее время в нужном формате
-
+            dt = str(strftime("%d.%m.%Y %H:%M:%S", gmtime())) # текущее время в нужном формате
+            print(dt)
             response_all_persons(
                     "INSERT INTO history "
                     "(ToTabnumPersons , FromTabnumPersons , BalanceTranc)"
                     " VALUES "
                     "({} , {} , {})".format(
-                        int(tabnum), int(fromtabnum), int(balance)), flag=1)  #вставить время  сюда как четвертый аргумент TransactDate
+                        int(tabnum), int(fromtabnum), int(balance))
+                , flag=1)  #вставить время  сюда как четвертый аргумент TransactDate
 
             return json_response({'Status': 'True'})
         return json_response({'Status': 'Недостаточное количество WorkCoin'})
@@ -340,4 +341,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5070, host='127.0.0.1')
+    app.run(debug=True, port=5070, host='192.168.1.64')
